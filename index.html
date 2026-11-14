@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b12"><title>JARVIS — Personal AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#080b12;--panel:#0e1420;--panel2:#121b2a;--line:#1e2b3e;--muted:#8492a8;--text:#eaf2ff;--blue:#65b9ff;--cyan:#6de4ed}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#16314b 0%,transparent 45%),var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;min-height:100vh}
+button,textarea,input{font:inherit}.app{max-width:1440px;margin:auto;min-height:100vh;display:grid;grid-template-columns:260px 1fr}
+.sidebar{border-right:1px solid var(--line);padding:26px 18px;background:#090e17cc;display:flex;flex-direction:column;gap:25px}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px}.brandmark{width:36px;height:36px;border:1px solid #3989c9;border-radius:12px;display:grid;place-items:center;color:var(--blue);box-shadow:0 0 22px #1b80c533;font-family:"Space Grotesk";font-weight:700}.brand strong{font:600 17px "Space Grotesk";letter-spacing:2px}.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:2px;margin-top:3px}
+.section-label{color:#65758c;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;padding:0 10px}
+.nav{display:grid;gap:6px}.nav button,.side-action{border:0;background:transparent;color:#aab8ca;text-align:left;padding:11px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:11px}.nav button.active,.nav button:hover,.side-action:hover{background:#172438;color:#eaf5ff}.nav .ico{width:18px;text-align:center;color:var(--blue)}
+.status-card{margin-top:auto;border:1px solid var(--line);background:#0e1724;border-radius:14px;padding:14px}.status-top{display:flex;align-items:center;gap:8px;font-size:12px}.dot{width:7px;height:7px;background:#55d6a0;border-radius:50%;box-shadow:0 0 10px #55d6a0}.status-card p{font-size:11px;color:var(--muted);line-height:1.6;margin:10px 0 0}
+.main{min-width:0;display:flex;flex-direction:column;min-height:100vh}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px}.crumb{font-size:12px;color:var(--muted)}.crumb b{color:#dceaff;font-weight:500}.top-right{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px}.avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#225b86,#16243a);display:grid;place-items:center;color:#dff5ff}
+.content{width:min(900px,100%);margin:0 auto;padding:36px 28px 24px;display:flex;flex-direction:column;flex:1}
+.eyebrow{font-size:10px;letter-spacing:2.2px;color:var(--blue);text-transform:uppercase;text-align:center}.hero{text-align:center;margin:10px 0 24px}.hero h1{font:500 clamp(28px,4vw,42px) "Space Grotesk";letter-spacing:-1.5px;margin:7px 0}.hero p{margin:0;color:var(--muted);font-size:13px}
+.orb-wrap{height:180px;display:grid;place-items:center;position:relative;margin:0 auto 12px;width:220px}.orb{width:126px;height:126px;border-radius:50%;position:relative;background:radial-gradient(circle at 45% 40%,#b7efff 0%,#4aa9ec 13%,#1765a2 32%,#0d2945 59%,#07111e 72%);box-shadow:0 0 35px #269ee866,0 0 90px #1e7ac344,inset 0 0 28px #a5e7ff66;animation:float 4s ease-in-out infinite}.orb:before,.orb:after{content:"";position:absolute;inset:-15px;border-radius:50%;border:1px solid #4bb7f477;animation:spin 14s linear infinite}.orb:after{inset:-28px;border-color:#4bb7f433;border-style:dashed;animation-direction:reverse;animation-duration:25s}.orb.listening{box-shadow:0 0 45px #59d9ff,0 0 110px #269ee899,inset 0 0 35px #fff}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes float{50%{transform:translateY(-7px)}}
+.orb-caption{text-align:center;font-size:10px;letter-spacing:2px;color:#86a5c4;text-transform:uppercase;margin-bottom:24px}
+.chat{display:flex;flex-direction:column;gap:14px;flex:1;min-height:190px;max-height:390px;overflow:auto;padding:6px 3px 18px;scrollbar-color:#263a52 transparent}
+.message{display:flex;gap:10px;align-items:flex-start;max-width:88%;animation:fade .25s ease}.message.user{align-self:flex-end;flex-direction:row-reverse}.bubble-icon{width:28px;height:28px;flex:none;border:1px solid #294767;border-radius:9px;display:grid;place-items:center;color:var(--blue);font-size:11px}.user .bubble-icon{color:#b5c7dc;border-color:#344154}.bubble{background:#101a28;border:1px solid #1c2b3e;border-radius:4px 13px 13px 13px;padding:11px 14px;font-size:13px;line-height:1.65;color:#d9e6f5;white-space:pre-wrap}.user .bubble{background:#17283b;border-color:#29435e;border-radius:13px 4px 13px 13px}.typing{color:#88a6c2}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.suggestions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:8px 0 17px}.suggestions button{background:#0e1724;border:1px solid #223249;color:#9fb2c9;padding:8px 12px;border-radius:20px;font-size:11px;cursor:pointer}.suggestions button:hover{border-color:#4b9bd6;color:#dff3ff}
+.composer{border:1px solid #263a51;background:#0d1521;border-radius:16px;padding:10px;display:flex;align-items:flex-end;gap:8px;box-shadow:0 15px 50px #0005}.composer textarea{resize:none;max-height:120px;min-height:42px;flex:1;background:transparent;border:0;outline:0;color:var(--text);padding:11px 8px;font-size:13px}.composer textarea::placeholder{color:#65768c}.toolbtn,.send{width:40px;height:40px;border-radius:11px;border:1px solid #26384d;background:#111d2c;color:#a9c6e3;cursor:pointer}.toolbtn:hover{color:white;border-color:#4c9bd5}.send{background:linear-gradient(135deg,#268bd0,#2463a3);border:0;color:white;font-size:17px}.send:disabled{opacity:.45;cursor:not-allowed}
+.footer-note{text-align:center;color:#596b82;font-size:10px;margin:12px 0 0}.settings-panel{display:none;margin-top:14px;background:#101a28;border:1px solid var(--line);border-radius:13px;padding:15px}.settings-panel.open{display:block}.settings-panel label{display:block;font-size:11px;color:#9eafc3;margin-bottom:7px}.settings-panel input{width:100%;background:#080e17;color:white;border:1px solid #2b4058;border-radius:8px;padding:10px;outline:none}.settings-panel small{display:block;color:#74869b;margin-top:7px;line-height:1.5}.toast{position:fixed;bottom:20px;right:20px;background:#15263a;border:1px solid #31516e;padding:11px 15px;border-radius:10px;font-size:12px;display:none}
+@media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{display:none}.topbar{height:58px;padding:0 18px}.content{padding:28px 16px 18px}.orb-wrap{height:155px}.chat{max-height:none;min-height:170px}.message{max-width:96%}.hero{margin-bottom:14px}}
+</style></head>
+<body><div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brandmark">J</div><div><strong>JARVIS</strong><small>PERSONAL AI SYSTEM</small></div></div>
+  <div><div class="section-label">Workspace</div><nav class="nav">
+    <button class="active"><span class="ico">◉</span> Assistant</button>
+    <button id="memoryNav"><span class="ico">◇</span> Memory</button>
+    <button id="settingsNav"><span class="ico">⚙</span> Settings</button>
+  </nav></div>
+  <div><div class="section-label">Quick actions</div><button class="side-action" data-prompt="Give me a concise briefing of today's priorities.">⌁ Daily briefing</button><button class="side-action" data-prompt="Help me plan and organize my day.">▦ Plan my day</button><button class="side-action" data-prompt="Explain a topic to me clearly, step by step.">⌘ Learn something</button></div>
+  <div class="status-card"><div class="status-top"><span class="dot"></span> Assistant interface ready</div><p>Voice and chat are available. AI connection depends on server configuration.</p></div>
+</aside>
+<main class="main">
+  <header class="topbar"><div class="crumb">JARVIS <span style="color:#43556b">/</span> <b>Assistant</b></div><div class="top-right"><span id="clock">--:--</span><div class="avatar">P</div></div></header>
+  <section class="content">
+    <div class="hero"><div class="eyebrow">Personal intelligence interface</div><h1>Good evening.</h1><p>I'm online and ready when you are.</p></div>
+    <div class="orb-wrap"><div class="orb" id="orb"></div></div><div class="orb-caption" id="orbCaption">JARVIS · STANDING BY</div>
+    <div class="chat" id="chat" aria-live="polite">
+      <div class="message"><div class="bubble-icon">J</div><div class="bubble">Good evening. I'm JARVIS, your personal AI assistant. You can speak or type to me. What would you like to work on?</div></div>
+    </div>
+    <div class="suggestions" id="suggestions"><button data-prompt="Give me a quick daily briefing.">Daily briefing</button><button data-prompt="Help me research an idea.">Research an idea</button><button data-prompt="Teach me something interesting.">Teach me something</button></div>
+    <div class="composer"><button class="toolbtn" id="mic" title="Voice input" aria-label="Voice input">🎙</button><textarea id="prompt" rows="1" placeholder="Message JARVIS…"></textarea><button class="toolbtn" id="speakToggle" title="Toggle spoken replies" aria-label="Toggle spoken replies">◖))</button><button class="send" id="send" aria-label="Send">↑</button></div>
+    <div class="settings-panel" id="settings"><label for="voiceSelect">Spoken response voice</label><select id="voiceSelect" style="background:#080e17;color:white;border:1px solid #2b4058;border-radius:8px;padding:9px;width:100%"></select><small>Speech uses your browser's built-in speech engine. Voice availability varies by device.</small></div>
+    <div class="settings-panel" id="memory"><label>Saved local memory</label><div id="memoryList" style="font-size:12px;color:#b9c9dc;line-height:1.7"></div><button class="toolbtn" id="clearMemory" style="width:auto;padding:0 12px;margin-top:10px">Clear memory</button><small>Memory is stored in this browser on this device. Do not save passwords or sensitive information.</small></div>
+    <p class="footer-note">JARVIS can make mistakes. Review important information and confirm consequential actions.</p>
+  </section>
+</main></div><div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s);
+const chatEl=$("#chat"), input=$("#prompt"), sendBtn=$("#send"), orb=$("#orb"), caption=$("#orbCaption");
+let history=[], busy=false, speakReplies=true, recognition=null, voices=[];
+const memoryKey="jarvis_memory_v1";
+function showToast(t){const el=$("#toast");el.textContent=t;el.style.display="block";setTimeout(()=>el.style.display="none",2600)}
+function addMessage(role,text){const row=document.createElement("div");row.className="message "+(role==="user"?"user":"");const icon=document.createElement("div");icon.className="bubble-icon";icon.textContent=role==="user"?"P":"J";const bubble=document.createElement("div");bubble.className="bubble";bubble.textContent=text;row.append(icon,bubble);chatEl.append(row);chatEl.scrollTop=chatEl.scrollHeight;return bubble}
+function setBusy(v){busy=v;sendBtn.disabled=v;caption.textContent=v?"JARVIS · PROCESSING":"JARVIS · STANDING BY";orb.style.opacity=v?".75":"1"}
+function getMemory(){try{return JSON.parse(localStorage.getItem(memoryKey)||"[]")}catch{return []}}
+function saveMemory(item){const arr=getMemory();arr.push({text:item,at:new Date().toLocaleString()});localStorage.setItem(memoryKey,JSON.stringify(arr.slice(-30)));renderMemory()}
+function renderMemory(){const arr=getMemory();$("#memoryList").textContent=arr.length?arr.map((x,i)=>`${i+1}. ${x.text} (${x.at})`).join("\n"):"No saved memories yet. Say “remember that …” in chat."}
+function speak(text){if(!speakReplies||!("speechSynthesis"in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);const selected=$("#voiceSelect").value;const v=voices.find(x=>x.name===selected);if(v)u.voice=v;u.rate=.98;u.pitch=1; speechSynthesis.speak(u)}
+async function send(text){text=(text||input.value).trim();if(!text||busy)return;input.value="";input.style.height="42px";$("#suggestions").style.display="none";addMessage("user",text);history.push({role:"user",content:text});
+ const remember=text.match(/^(?:remember that|save this:?)\s+(.+)/i);if(remember){saveMemory(remember[1]);const reply="Understood. I've saved that in this browser's local memory.";addMessage("assistant",reply);history.push({role:"assistant",content:reply});speak(reply);return}
+ setBusy(true);const typing=addMessage("assistant","One moment…");typing.classList.add("typing");
+ try{const response=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:history})});const data=await response.json();if(!response.ok)throw new Error(data.error||"Request failed");typing.textContent=data.reply;typing.classList.remove("typing");history.push({role:"assistant",content:data.reply});speak(data.reply)}
+ catch(e){typing.textContent=e.message.includes("not configured")?"My AI connection has not been configured yet. Add an OpenAI API key to the server environment to activate my intelligence.":e.message;typing.classList.remove("typing");}
+ finally{setBusy(false);chatEl.scrollTop=chatEl.scrollHeight}
+}
+sendBtn.addEventListener("click",()=>send());input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}});input.addEventListener("input",()=>{input.style.height="42px";input.style.height=Math.min(input.scrollHeight,120)+"px"});
+document.querySelectorAll("[data-prompt]").forEach(b=>b.addEventListener("click",()=>send(b.dataset.prompt)));
+$("#speakToggle").addEventListener("click",()=>{speakReplies=!speakReplies;$("#speakToggle").style.borderColor=speakReplies?"#4c9bd5":"#26384d";showToast(speakReplies?"Spoken replies enabled":"Spoken replies muted")});
+function loadVoices(){voices=speechSynthesis.getVoices();const select=$("#voiceSelect");select.innerHTML="";voices.forEach(v=>{const o=document.createElement("option");o.value=v.name;o.textContent=`${v.name} (${v.lang})`;select.append(o)})}
+if("speechSynthesis"in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(SpeechRecognition){recognition=new SpeechRecognition();recognition.lang=navigator.language||"en-US";recognition.interimResults=false;recognition.onstart=()=>{orb.classList.add("listening");caption.textContent="JARVIS · LISTENING"};recognition.onend=()=>{orb.classList.remove("listening");caption.textContent="JARVIS · STANDING BY"};recognition.onresult=e=>{input.value=e.results[0][0].transcript;send()};recognition.onerror=()=>showToast("Voice input was unavailable. Try typing instead.")}else $("#mic").disabled=true;
+$("#mic").addEventListener("click",()=>{if(!recognition){showToast("Voice recognition is not supported in this browser.");return}try{recognition.start()}catch{}});
+$("#settingsNav").addEventListener("click",()=>{$("#settings").classList.toggle("open");$("#memory").classList.remove("open")});
+$("#memoryNav").addEventListener("click",()=>{$("#memory").classList.toggle("open");$("#settings").classList.remove("open");renderMemory()});
+$("#clearMemory").addEventListener("click",()=>{if(confirm("Clear all locally saved JARVIS memories?")){localStorage.removeItem(memoryKey);renderMemory();showToast("Local memory cleared")}});
+function clock(){const d=new Date();$("#clock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}clock();setInterval(clock,30000);
+</script></body></html>
